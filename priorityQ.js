@@ -58,7 +58,7 @@ class PQL {
         node.next = curr.next
         curr.next = node 
     }
-    this.size--
+    this.size++
   }
 
   dequeue(){

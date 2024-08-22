@@ -225,56 +225,119 @@
 // q.dequeue()
 // q.print()
 
-class Node {
-  constructor (value) {
-    this.value = value
-    this.next = null
-  }
-}
+// class Node {
+//   constructor (value) {
+//     this.value = value
+//     this.next = null
+//   }
+// }
 
-class QueueList {
-  constructor () {
-    this.head = null
-    this.tail = null
-    this.size = 0
+// class QueueList {
+//   constructor () {
+//     this.head = null
+//     this.tail = null
+//     this.size = 0
+//   }
+
+//   enqueue (value) {
+//     const node = new Node(value)
+//     if (this.size == 0) {
+//       this.head = node
+//       this.tail = node
+//     } else {
+//       this.tail.next = node
+//       this.tail = node
+//     }
+//     this.size++
+//   }
+
+//   dequeue () {
+//     if (this.isEmpty()) {
+//         console.log('Q is empty, nothing to remove');
+//         return null; 
+//     }
+
+//     const dequeuedValue = this.head.value; 
+//     this.head = this.head.next;
+
+//     if (this.head === null) {
+//         this.tail = null;
+//     }
+
+//     this.size--;
+
+//     return dequeuedValue; 
+// }
+
+
+//   getSize () {
+//     return this.size
+//   }
+
+//   isEmpty () {
+//     return this.size == 0
+//   }
+// }
+
+class HashTable {
+  constructor(size){
+    this.table = []
+    this.size = size
   }
 
-  enqueue (value) {
-    const node = new Node(value)
-    if (this.size == 0) {
-      this.head = node
-      this.tail = node
+  hash(key){
+    let index = 0 
+    for(let i = 0 ; i < key.length ; i++){
+      index += key.charCodeAt(i)
+    }
+    return index % this.size
+  }
+
+  set(key,value){
+    const index = this.hash(key)
+    if (!this.table[index]) {
+      this.table[index] = []
+    }
+
+    const pair = this.table[index].find(pair => pair[0] == key)
+    if (pair) {
+      pair[1] = value
     } else {
-      this.tail.next = node
-      this.tail = node
+      this.table[index].push([key,value])
     }
-    this.size++
   }
 
-  dequeue () {
-    if (this.isEmpty()) {
-        console.log('Q is empty, nothing to remove');
-        return null; 
+  get(key){
+    const index = this.hash(index)
+    if (this.table[index]) {
+      const pair = this.table[index].find(pair => pair[0] == key)
+      if (pair) {
+        return pair[1]
+      }
     }
-
-    const dequeuedValue = this.head.value; 
-    this.head = this.head.next;
-
-    if (this.head === null) {
-        this.tail = null;
+    return 'No value found'
+  }
+  
+  remove(key){
+    const index = this.hash(key)
+    if (this.table[index]) {
+      this.table[index] = this.table[index].filter(pair => pair[0] != key)
+      return 
     }
-
-    this.size--;
-
-    return dequeuedValue; 
-}
-
-
-  getSize () {
-    return this.size
+  
   }
 
-  isEmpty () {
-    return this.size == 0
+  display(){
+    console.log(this.table);
+    
   }
 }
+
+const table = new HashTable(5)
+
+table.display()
+table.set('name','Rasal')
+table.set('name','Asif')
+table.set('Age',18)
+table.set('Age',25)
+table.display()
